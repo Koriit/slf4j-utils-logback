@@ -1,0 +1,144 @@
+/////////////
+// PLUGINS //
+/////////////
+
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.3.50"
+    id "com.jfrog.bintray" version "1.8.4"
+    id "java-library"
+    id "maven-publish"
+    id "jacoco"
+    id "org.jlleitschuh.gradle.ktlint" version "9.1.1"
+}
+
+//////////////////
+// DEPENDENCIES //
+//////////////////
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url "https://dl.bintray.com/koriit/kotlin/"
+    }
+}
+
+dependencies {
+    // KOTLIN
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    // SLF4J
+    api "koriit.kotlin:slf4j-utils:0.4"
+
+    // LOGBACK
+    api "ch.qos.logback:logback-classic:1.2.3"
+    api "net.logstash.logback:logstash-logback-encoder:5.3"
+
+    // TESTING
+    testImplementation "org.junit.jupiter:junit-jupiter:5.5.0"
+    testImplementation "org.slf4j:slf4j-simple:1.7.28"
+}
+
+/////////////
+// COMPILE //
+/////////////
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+//////////
+// TEST //
+//////////
+
+ktlint {
+    verbose = true
+}
+
+test {
+    useJUnitPlatform {
+        excludeTags project.hasProperty("fast") ? "Slow" : "None"
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.4"
+}
+
+test.finalizedBy(jacocoTestReport)
+
+/////////////
+// PUBLISH //
+/////////////
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier = "sources"
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = "javadoc"
+}
+
+publishing {
+    publications {
+        bintrayMaven(MavenPublication) {
+            groupId = project.group
+            artifactId = projectName
+            version = project.version
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                name = "SLF4J+Logback Utils"
+                description = "SLF4J+Logback utils for Kotlin"
+                url = "https://github.com/Koriit/slf4j-utils-logback"
+                licenses {
+                    license {
+                        name = "The MIT License"
+                        url = "https://github.com/Koriit/slf4j-utils-logback/blob/master/LICENSE"
+                    }
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getProperty("bintray.user")
+    key = System.getProperty("bintray.key")
+    publications = ["bintrayMaven"]
+
+    pkg {
+        repo = "kotlin"
+        name = "slf4j-utils-logback"
+        version {
+            name = project.version
+            released  = new Date()
+        }
+    }
+}
+
+///////////
+// OTHER //
+///////////
+
+task getVersion {
+    doLast {
+        print project.version
+    }
+}

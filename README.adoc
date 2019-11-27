@@ -1,0 +1,8 @@
+= SLF4J+Logback Utils
+
+image:https://www.travis-ci.org/Koriit/slf4j-utils-logback.svg?branch=master["Build Status", link="https://www.travis-ci.org/Koriit/slf4j-utils-logback"]
+image:https://www.codefactor.io/repository/github/koriit/slf4j-utils-logback/badge[CodeFactor,link=https://www.codefactor.io/repository/github/koriit/slf4j-utils-logback]
+image:https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg[ktlint,link=https://ktlint.github.io/]
+image:https://api.bintray.com/packages/koriit/kotlin/slf4j-utils-logback/images/download.svg[Download, link=https://bintray.com/koriit/kotlin/slf4j-utils-logback/_latestVersion]
+
+SLF4J+Logback utils for Kotlin.
