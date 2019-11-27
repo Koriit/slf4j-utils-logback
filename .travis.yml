@@ -1,3 +1,6 @@
+os: linux
+dist: trusty
+
 language: java
 
 jdk:
@@ -20,8 +23,10 @@ before_install:
   - chmod +x gradle/wrapper/gradle-wrapper.jar
 
 script:
-  - if [[ ! -z "$TRAVIS_TAG" ]]; then
-  -   ./gradlew build bintrayUpload -Pversion=$TRAVIS_TAG -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY
-  - else
-  -   ./gradlew build
-  - fi
+  - ./gradlew build
+
+deploy:
+  provider: script
+  script: ./gradlew build bintrayUpload -Pversion=$TRAVIS_TAG -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY
+  on:
+    tags: true
