@@ -174,3 +174,7 @@ LOG.performance("{} ms - {} - {} {}", duration, responseInfo["status"], method, 
   }
 }
 ----
+
+[NOTE]
+Performance logs are still logged as `INFO`. Whether this difference is visible in the
+output depends on your format, if it includes markers in some way.
