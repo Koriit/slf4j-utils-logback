@@ -8,7 +8,9 @@ import org.slf4j.Logger
 import org.slf4j.Marker
 import org.slf4j.MarkerFactory
 
-/** SLF4J marker for performance logs */
+/**
+ * SLF4J marker for performance logs.
+ */
 val PERFORMANCE: Marker = MarkerFactory.getMarker("PERFORMANCE")
 
 /**

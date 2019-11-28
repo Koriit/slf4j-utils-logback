@@ -7,4 +7,170 @@ image:https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg[ktlint,link
 image:https://api.bintray.com/packages/koriit/kotlin/slf4j-utils-logback/images/download.svg[Download, link=https://bintray.com/koriit/kotlin/slf4j-utils-logback/_latestVersion]
 image:https://img.shields.io/github/license/koriit/slf4j-utils-logback[GitHub]
 
-SLF4J+Logback utils for Kotlin.
+https://github.com/Koriit/slf4j-utils[SLF4J Utils] + Logback + Logback Utils
+
+== Default Configuration
+This library overrides default configuration provided by Logback by default.
+
+Configuration is injected with service loading, so you can still override it with
+`logback-test.xml`, `logback.groovy` or `logback.xml`.
+
+You can configure root logger level with `logging.root.level` system property or
+`LOGGING_ROOT_LEVEL` environment variable.
+
+[NOTE]
+Logs are outputed to the console.
+
+=== Default Format
+----
+2019-11-28 11:51:41.234 INFO  [main           ] (Application.kt:59)                                          : Application configured, starting... 2bef553b 03c49529
+2019-11-28 11:51:42.706 INFO  [atcher-worker-1] (BaseApplicationEngine.kt:39)                                : Responding at http://0.0.0.0:8080 2bef553b 03c49529
+2019-11-28 11:51:42.735 INFO  [main           ] (Application.kt:81)                                          : Application startup finished: 2.925s 2bef553b
+----
+----
+2019-11-28 11:51:41.234                <1>
+INFO                                   <2>
+[main]                                 <3>
+(Application.kt:59)                    <4>
+:                                      <5>
+Application configured, starting...    <6>
+2bef553b                               <7>
+03c49529                               <8>
+----
+<1> Timestamp of the log with millisecond precision
+<2> http://www.slf4j.org/apidocs/org/slf4j/event/Level.html[Log level]
+<3> Thread name
+<4> File name and line(If IDE can find the file this should be clickable)
+<5> Visual `:` delimiter
+<6> Log message
+<7> Optional MDC `correlationId`
+<8> Optional MDC `subCorrelationId`
+
+Elements 1-4 are fixed length to make reading messages easier for humans.
+
+=== JSON Format
+It is possible to enable JSON format by providing `logging.format=json` system property or
+`LOGGING_FORMAT=json` environment variable.
+
+By directly logging with JSON documents we can avoid CPU intensive and costly parsing of log strings.
+JSON format is achieved with `LogstashEncoder` which is adjusted for ELK, however, any NoSQL/JSON Storage
+should be able to receive such logs without hitch.
+
+[source,json]
+----
+{"@timestamp":"2019-11-28T12:30:06.314+01:00","@version":"1","message":"Application configured, starting...","logger_name":"koriit.kotlin.kodein.application.ApplicationKt","thread_name":"main","level":"INFO","level_value":20000,"subCorrelationId":"ffe5b8f0-10af-4192-94df-853ea5da4aa2","correlationId":"71a89c2a-5915-4f44-909c-90ae6b9e5755"}
+{"@timestamp":"2019-11-28T12:30:07.383+01:00","@version":"1","message":"Responding at http://0.0.0.0:8080","logger_name":"koriit.kotlin.app.Logging","thread_name":"DefaultDispatcher-worker-1","level":"INFO","level_value":20000,"subCorrelationId":"ffe5b8f0-10af-4192-94df-853ea5da4aa2","correlationId":"71a89c2a-5915-4f44-909c-90ae6b9e5755"}
+{"@timestamp":"2019-11-28T12:30:07.410+01:00","@version":"1","message":"Application startup finished: 2.397s","logger_name":"koriit.kotlin.kodein.application.ApplicationKt","thread_name":"main","level":"INFO","level_value":20000,"subCorrelationId":"ffe5b8f0-10af-4192-94df-853ea5da4aa2","correlationId":"71a89c2a-5915-4f44-909c-90ae6b9e5755"}
+----
+
+[source,json]
+----
+{
+  "@timestamp": "2019-11-28T12:30:06.314+01:00",
+  "@version": "1",
+  "message": "Application configured, starting...",
+  "logger_name": "koriit.kotlin.kodein.application.ApplicationKt",
+  "thread_name": "main",
+  "level": "INFO",
+  "level_value": 20000,
+  "subCorrelationId": "ffe5b8f0-10af-4192-94df-853ea5da4aa2",
+  "correlationId": "71a89c2a-5915-4f44-909c-90ae6b9e5755"
+}
+----
+
+[NOTE]
+Please, note that there is `logger_name` instead of file name and line.
+That's because computing file name and line is not particularly fast according to Logback documentation.
+In the end logger name also allows to precisely locate logging site.
+
+[NOTE]
+Any log markers will be put into `tags` array.
+
+== Graceful closing
+Do you make sure to gracefully close your async loggers? :)
+
+If your application finishes with your `main` you can do the following:
+[source,kotlin]
+----
+fun main() {
+    // Application code...
+
+    // Close logging threads and flush buffers
+    closeLoggers()
+}
+----
+
+== Performance logs
+One of the most interesting things you can extract from your logs is the performance of your application -
+certain sections, API methods, startup, etc.
+
+However, calculating averages and percentiles assumes we are working with numbers, thus you would need
+to parse your log strings. With help comes JSON format.
+
+With `net.logstash.logback.argument.StructuredArguments.value` you can put any arbitrary value into your
+JSON log. In particular a number - some duration.
+
+[source,kotlin]
+----
+LOG.info("Request took {} ms", value("duration", duration))
+----
+[source,json]
+----
+{
+  "@timestamp": "2019-11-28T13:04:50.961+01:00",
+  "@version": "1",
+  "message": "Request took 12 ms",
+  "logger_name": "koriit.kotlin.app.Logging",
+  "thread_name": "worker-1",
+  "level": "INFO",
+  "level_value": 20000,
+  "correlationId": "caf9b662-a0cd-4d0a-8b75-e4cde32b232f",
+  "duration": 12
+}
+----
+
+This library provides a set of `performance` extension functions that do this for you and also
+add `PERFORMANCE` marker.
+
+[source,kotlin]
+----
+//...
+val additionalInfo = mapOf(
+    "request" to requestInfo,
+    "response" to responseInfo
+)
+
+LOG.performance("{} ms - {} - {} {}", duration, responseInfo["status"], method, requestInfo["url"], appendEntries(additionalInfo))
+----
+[source,json]
+----
+{
+  "@timestamp": "2019-11-28T13:24:47.832+01:00",
+  "@version": "1",
+  "message": "3 ms - 200 - GET http://localhost:8080/api/entities",
+  "logger_name": "koriit.kotlin.app.Logging",
+  "thread_name": "worker-4",
+  "level": "INFO",
+  "level_value": 20000,
+  "correlationId": "db4f0ccb-0ba8-45f8-a21b-6adb83c6bd86",
+  "tags": [
+    "PERFORMANCE"
+  ],
+  "duration": 3,
+  "request": {
+    "method": "GET",
+    "protocol": "HTTP/1.1",
+    "url": "http://localhost:8080/api/entities",
+    "api": "GET /api/entities",
+    "route": "/api/entities",
+    "remoteHost": "unknown",
+    "contentType": "*/*",
+    "contentLength": null
+  },
+  "response": {
+    "status": 200,
+    "contentType": "application/json; charset=UTF-8",
+    "contentLength": 5606
+  }
+}
+----
