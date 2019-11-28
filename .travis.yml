@@ -27,6 +27,8 @@ script:
 
 deploy:
   provider: script
+  skip_cleanup: true
   script: ./gradlew build bintrayUpload -Pversion=$TRAVIS_TAG -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY
   on:
     tags: true
+    jdk: openjdk8

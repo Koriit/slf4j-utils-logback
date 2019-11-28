@@ -1,0 +1,26 @@
+build:
+  maxIssues: 0
+
+comments:
+  CommentOverPrivateFunction:
+    active: true
+  CommentOverPrivateProperty:
+    active: true
+  EndOfSentenceFormat:
+    active: true
+  UndocumentedPublicClass:
+    active: true
+  UndocumentedPublicFunction:
+    active: true
+  UndocumentedPublicProperty:
+    active: true
+
+performance:
+  SpreadOperator:
+    excludes: "**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt,**/main/**/Performance.kt"
+
+formatting:
+  active: false
+
+style:
+  active: false
