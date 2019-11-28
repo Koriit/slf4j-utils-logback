@@ -10,7 +10,7 @@ image:https://img.shields.io/github/license/koriit/slf4j-utils-logback[GitHub]
 https://github.com/Koriit/slf4j-utils[SLF4J Utils] + Logback + Logback Utils
 
 == Default Configuration
-This library overrides default configuration provided by Logback by default.
+This library overrides default configuration provided by Logback.
 
 Configuration is injected with service loading, so you can still override it with
 `logback-test.xml`, `logback.groovy` or `logback.xml`.

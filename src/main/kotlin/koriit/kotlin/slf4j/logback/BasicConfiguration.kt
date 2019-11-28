@@ -12,7 +12,7 @@ import ch.qos.logback.core.spi.ContextAwareBase
 import net.logstash.logback.encoder.LogstashEncoder
 
 /**
- * Overrides basic configuration provided by Logback by default.
+ * Overrides default configuration provided by Logback.
  * Changes the pattern to be more useful and pleasant to the human eye.
  *
  * This configuration can still be overridden by any `logback-test.xml`, `logback.groovy` and `logback.xml` on the classpath.
