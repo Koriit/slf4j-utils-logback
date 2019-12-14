@@ -19,7 +19,8 @@ You can configure root logger level with `logging.root.level` system property or
 `LOGGING_ROOT_LEVEL` environment variable.
 
 [NOTE]
-Logs are outputed to the console.
+Logs are printed to the console. Which - with modern containers - is not a problem if you want to gather your logs
+in files or centralized database.
 
 === Default Format
 ----
