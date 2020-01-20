@@ -23,7 +23,7 @@ import net.logstash.logback.encoder.LogstashEncoder
  * It is also possible to change to JSON format by providing `logging.format=json` system property or
  * `LOGGING_FORMAT=json` environment variable. By directly logging with JSON documents we can avoid CPU intensive
  * and costly parsing of log strings. JSON format is achieved with LogstashEncoder which is adjusted for ELK, however,
- * any NoSQL/JSON Storage should be able to receive such logs without hitch.
+ * any NoSQL/JSON Storage should be able to receive such logs.
  */
 class BasicConfiguration : ContextAwareBase(), Configurator {
     override fun configure(ctx: LoggerContext) {
