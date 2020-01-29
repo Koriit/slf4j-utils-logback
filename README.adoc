@@ -19,8 +19,12 @@ You can configure root logger level with `logging.root.level` system property or
 `LOGGING_ROOT_LEVEL` environment variable.
 
 [NOTE]
-Logs are printed to the console. Which - with modern containers - is not a problem if you want to gather your logs
-in files or centralized database.
+Logs are printed to the console. Which - with modern containers - is not a problem if you want to
+gather your logs in files or centralized database.
+
+[WARNING]
+If you override this configuration, please, remember to also properly initialize SLF4J bridge
+for j.u.l.(see _BasicConfiguration_ class)
 
 === Default Format
 ----
@@ -54,8 +58,8 @@ It is possible to enable JSON format by providing `logging.format=json` system p
 `LOGGING_FORMAT=json` environment variable.
 
 By directly logging with JSON documents we can avoid CPU intensive and costly parsing of log strings.
-JSON format is achieved with `LogstashEncoder` which is adjusted for ELK, however, any NoSQL/JSON Storage
-should be able to receive such logs without hitch.
+JSON format is achieved with `LogstashEncoder` which is adjusted for ELK, however,
+any NoSQL/JSON Storage should be able to receive such logs.
 
 [source,json]
 ----
@@ -102,8 +106,8 @@ fun main() {
 ----
 
 == Performance logs
-One of the most interesting things you can extract from your logs is the performance of your application -
-certain sections, API methods, startup, etc.
+One of the most interesting things you can extract from your logs is the performance of your
+application - certain sections, API methods, startup, etc.
 
 However, calculating averages and percentiles assumes we are working with numbers, thus you would need
 to parse your log strings. With help comes JSON format.
