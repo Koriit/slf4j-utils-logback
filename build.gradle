@@ -9,7 +9,7 @@ plugins {
     id "maven-publish"
     id "jacoco"
     id "org.jlleitschuh.gradle.ktlint" version "9.2.1"
-    id "io.gitlab.arturbosch.detekt" version "1.7.4"
+    id "io.gitlab.arturbosch.detekt" version "1.10.0"
     id "com.github.ben-manes.versions" version "0.28.0"
 }
 
@@ -30,17 +30,17 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     // SLF4J
-    api "koriit.kotlin:slf4j-utils:0.6.0"
+    api "koriit.kotlin:slf4j-utils:0.7.0"
     implementation "org.slf4j:jcl-over-slf4j:$slf4jVersion"
     implementation "org.slf4j:log4j-over-slf4j:$slf4jVersion"
     implementation "org.slf4j:jul-to-slf4j:$slf4jVersion"
 
     // LOGBACK
     api "ch.qos.logback:logback-classic:1.2.3"
-    api "net.logstash.logback:logstash-logback-encoder:6.3"
+    api "net.logstash.logback:logstash-logback-encoder:6.4"
 
     // TESTING
-    testImplementation "org.junit.jupiter:junit-jupiter:5.6.1"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.2"
     testImplementation "org.slf4j:slf4j-simple:$slf4jVersion"
 }
 
@@ -90,7 +90,7 @@ compileTestKotlin {
 //////////
 
 ktlint {
-    version = "0.36.0"
+    version = "0.37.2"
     verbose = true
 }
 

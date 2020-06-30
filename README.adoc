@@ -12,7 +12,7 @@ https://github.com/Koriit/slf4j-utils[SLF4J Utils] + Logback + Logback Utils
 == Default Configuration
 This library overrides default configuration provided by Logback.
 
-Configuration is injected with service loading, so you can still override it with
+The configuration is injected with service loading, so you can still override it with
 `logback-test.xml`, `logback.groovy` or `logback.xml`.
 
 You can configure root logger level with `logging.root.level` system property or
@@ -58,7 +58,7 @@ It is possible to enable JSON format by providing `logging.format=json` system p
 `LOGGING_FORMAT=json` environment variable.
 
 By directly logging with JSON documents we can avoid CPU intensive and costly parsing of log strings.
-JSON format is achieved with `LogstashEncoder` which is adjusted for ELK, however,
+The JSON format is achieved with `LogstashEncoder` which is adjusted for ELK, however,
 any NoSQL/JSON Storage should be able to receive such logs.
 
 [source,json]
@@ -89,7 +89,7 @@ That's because computing file name and line is not particularly fast according t
 In the end logger name also allows to precisely locate logging site.
 
 [NOTE]
-Any log markers will be put into `tags` array.
+Any log markers will be put into the `tags` array.
 
 == Graceful closing
 Do you make sure to gracefully close your async loggers? :)
@@ -182,4 +182,4 @@ LOG.performance("{} ms - {} - {} {}", duration, responseInfo["status"], method, 
 
 [NOTE]
 Performance logs are still logged as `INFO`. Whether this difference is visible in the
-output depends on your format, if it includes markers in some way.
+output depends on your format, whether it includes markers in some way.
