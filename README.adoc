@@ -10,23 +10,25 @@ image:https://img.shields.io/github/license/koriit/slf4j-utils-logback[GitHub]
 https://github.com/Koriit/slf4j-utils[SLF4J Utils] + Logback + Logback Utils
 
 == Default Configuration
-This library overrides default configuration provided by Logback.
+This library overrides the default configuration provided by Logback.
 
 The configuration is injected with service loading, so you can still override it with
 `logback-test.xml`, `logback.groovy` or `logback.xml`.
 
-You can configure root logger level with `logging.root.level` system property or
+You can configure the root logger level with the `logging.root.level` system property or
 `LOGGING_ROOT_LEVEL` environment variable.
 
 [NOTE]
-Logs are printed to the console. Which - with modern containers - is not a problem if you want to
+Logs are printed to the standard output. Which - with modern containers - is not a problem if you want to
 gather your logs in files or centralized database.
 
 [WARNING]
-If you override this configuration, please, remember to also properly initialize SLF4J bridge
-for j.u.l.(see _BasicConfiguration_ class)
+If you override this configuration, please, remember to also properly initialize the SLF4J bridge
+for j.u.l. (see _BasicConfiguration_ class)
 
 === Default Format
+Optimized for human readability and local development.
+
 ----
 2019-11-28 11:51:41.234 INFO  [main           ] (Application.kt:59)                                          : Application configured, starting... 2bef553b 03c49529
 2019-11-28 11:51:42.706 INFO  [atcher-worker-1] (BaseApplicationEngine.kt:39)                                : Responding at http://0.0.0.0:8080 2bef553b 03c49529
@@ -42,10 +44,10 @@ Application configured, starting...    <6>
 2bef553b                               <7>
 03c49529                               <8>
 ----
-<1> Timestamp of the log with millisecond precision
+<1> Timestamp of the log with millisecond precision (note that there is no timezone offset)
 <2> http://www.slf4j.org/apidocs/org/slf4j/event/Level.html[Log level]
 <3> Thread name
-<4> File name and line(If IDE can find the file this should be clickable)
+<4> File name and line (If IDE can find the file this should be clickable)
 <5> Visual `:` delimiter
 <6> Log message
 <7> Optional MDC `correlationId`
@@ -54,6 +56,8 @@ Application configured, starting...    <6>
 Elements 1-4 are fixed length to make reading messages easier for humans.
 
 === JSON Format
+Optimized for gathering and machine processing.
+
 It is possible to enable JSON format by providing `logging.format=json` system property or
 `LOGGING_FORMAT=json` environment variable.
 
@@ -84,9 +88,9 @@ any NoSQL/JSON Storage should be able to receive such logs.
 ----
 
 [NOTE]
-Please, note that there is `logger_name` instead of file name and line.
+Please, note that there is `logger_name` instead of a file name and line.
 That's because computing file name and line is not particularly fast according to Logback documentation.
-In the end logger name also allows to precisely locate logging site.
+In the end, the logger name also allows us to precisely locate the logging site.
 
 [NOTE]
 Any log markers will be put into the `tags` array.
@@ -117,7 +121,7 @@ JSON log. In particular a number - some duration.
 
 [source,kotlin]
 ----
-LOG.info("Request took {} ms", value("duration", duration))
+log.info("Request took {} ms", value("duration", duration))
 ----
 [source,json]
 ----
@@ -145,7 +149,7 @@ val additionalInfo = mapOf(
     "response" to responseInfo
 )
 
-LOG.performance("{} ms - {} - {} {}", duration, responseInfo["status"], method, requestInfo["url"], appendEntries(additionalInfo))
+log.performance("{} ms - {} - {} {}", duration, responseInfo["status"], method, requestInfo["url"], appendEntries(additionalInfo))
 ----
 [source,json]
 ----
