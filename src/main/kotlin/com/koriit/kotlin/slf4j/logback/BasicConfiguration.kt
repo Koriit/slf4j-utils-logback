@@ -1,4 +1,4 @@
-package koriit.kotlin.slf4j.logback
+package com.koriit.kotlin.slf4j.logback
 
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger

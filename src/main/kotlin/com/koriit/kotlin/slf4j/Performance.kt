@@ -1,7 +1,7 @@
 // Logging functions are inlined to remove extra entry on the stack
 @file:Suppress("NOTHING_TO_INLINE")
 
-package koriit.kotlin.slf4j
+package com.koriit.kotlin.slf4j
 
 import net.logstash.logback.argument.StructuredArguments.value
 import org.slf4j.Logger
