@@ -1,11 +1,13 @@
 = SLF4J+Logback Utils
 
-image:https://www.travis-ci.org/Koriit/slf4j-utils-logback.svg?branch=master["Build Status", link="https://www.travis-ci.org/Koriit/slf4j-utils-logback"]
+image:https://github.com/Koriit/slf4j-utils-logback/actions/workflows/build.yaml/badge.svg[Build, link="https://github.com/Koriit/slf4j-utils-logback/actions/workflows/build.yaml"]
 image:https://www.codefactor.io/repository/github/koriit/slf4j-utils-logback/badge[CodeFactor,link=https://www.codefactor.io/repository/github/koriit/slf4j-utils-logback]
 image:https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg[ktlint,link=https://ktlint.github.io/]
 
-image:https://api.bintray.com/packages/koriit/kotlin/slf4j-utils-logback/images/download.svg[Download, link=https://bintray.com/koriit/kotlin/slf4j-utils-logback/_latestVersion]
+image:https://img.shields.io/maven-central/v/com.koriit.kotlin/slf4j-utils-logback.svg?label=Maven%20Central[Maven Central, link="https://search.maven.org/search?q=g:%22com.koriit.kotlin%22%20AND%20a:%22slf4j-utils-logback%22"]
 image:https://img.shields.io/github/license/koriit/slf4j-utils-logback[GitHub]
+
+WARNING: From version 0.4.0 all package names have been renamed to match new artifact group id.
 
 https://github.com/Koriit/slf4j-utils[SLF4J Utils] + Logback + Logback Utils
 
