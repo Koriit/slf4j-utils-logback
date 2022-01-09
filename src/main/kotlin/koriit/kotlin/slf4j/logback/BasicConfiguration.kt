@@ -50,7 +50,7 @@ class BasicConfiguration : ContextAwareBase(), Configurator {
         val appender = ConsoleAppender<ILoggingEvent>()
         appender.context = lc
         appender.name = "console"
-        appender.encoder = when (loggingFormat.toLowerCase()) {
+        appender.encoder = when (loggingFormat.lowercase()) {
             "json" -> {
                 LogstashEncoder().apply {
                     isIncludeMdc = true
